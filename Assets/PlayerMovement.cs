@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private Vector2 m_MoveDirection;
-    public float fMoveSpeed;
-    public Rigidbody2D rb;
+    private Vector2 s_MoveDirection;
+    public GameObject[] doors;
+    public float MoveSpeed;
+    public Rigidbody2D PlayerBody;
 
     // Start is called before the first frame update
     void Start()
@@ -27,14 +28,24 @@ public class PlayerMovement : MonoBehaviour
 
     void ProcessInputs()
     {
-        float fMoveX = Input.GetAxisRaw("Horizontal");
-        float fMoveY = Input.GetAxisRaw("Vertical");
+        float MoveX = Input.GetAxisRaw("Horizontal");
+        float MoveY = Input.GetAxisRaw("Vertical");
 
-        m_MoveDirection = new Vector2(fMoveX, fMoveY);
+        s_MoveDirection = new Vector2(MoveX, MoveY);
     }
 
     void Move()
     {
-        rb.velocity = new Vector2(m_MoveDirection.x * fMoveSpeed, m_MoveDirection.y * fMoveSpeed);
+        PlayerBody.velocity = new Vector2(s_MoveDirection.x * MoveSpeed, s_MoveDirection.y * MoveSpeed);
+    }
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.gameObject.tag == "Door")
+        {
+            Destroy(col.gameObject);
+            Debug.Log("atins");
+        }
+
     }
 }
